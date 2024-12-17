@@ -1,0 +1,62 @@
+{
+  "xsappname": "smart-returns-approuter",
+  "tenant-mode": "dedicated",
+  "description": "Security profile of SBM application",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.SmartReturnsUser",
+      "description": "With this scope, USER will only have read"
+    },
+    {
+      "name": "$XSAPPNAME.SmartReturnsAdmin",
+      "description": "With this scope, USER will be able to review returns "
+    }
+  ],
+
+  "role-templates": [
+    {
+      "name": "SmartReturnsUser",
+      "description": "Role for SBM user",
+      "scope-references": [
+        "$XSAPPNAME.SmartReturnsUser"
+      ]
+    },
+    {
+      "name": "SmartReturnsAdmin",
+      "description": "Role for SBM admin",
+      "scope-references": [
+        "$XSAPPNAME.SmartReturnsUser",
+        "$XSAPPNAME.SmartReturnsAdmin"
+      ]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "SRUser",
+      "description": "Smart Returns user",
+      "role-template-references": [
+        "$XSAPPNAME.SmartReturnsUser"
+      ]
+    },
+    {
+      "name": "SBMAdmin",
+      "description": "SBM Admin",
+      "role-template-references": [
+        "$XSAPPNAME.SmartReturnsAdmin"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+      "redirect-uris": [
+         "https://*.us10.trial.applicationstudio.cloud.sap/**",
+          "http://localhost:5000/login/callback",
+          "https://*.emea2.cds.t-internal.com:8080/**",
+          "https://*.eu10.applicationstudio.cloud.sap/**",
+          "https://*.workzone.cfapps.eu10.hana.ondemand.com/**",
+          "https://*.eu10.hana.ondemand.com/**",
+    "https://*.eu10-004.hana.ondemand.com/**",
+          "https://*.ap11.hana.ondemand.com/**",
+          "https://*.us10-001.hana.ondemand.com/**"
+      ]
+  }
+}

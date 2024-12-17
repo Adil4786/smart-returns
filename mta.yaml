@@ -1,0 +1,95 @@
+_schema-version: "3.2"
+ID: smart-returns
+description: BTP Launchpad Samples with a simple Apps
+version: 0.0.1
+modules:
+- name: smart-returns-ui
+  type: html5
+  path: app
+  build-parameters:
+    build-result: dist
+    builder: custom
+    supported-platforms: []
+    commands:
+    - npm install
+    - npm run build:cf
+  requires:
+    - name: smart-returns-app-uaa
+    - name: node-api
+      group: destinations
+      properties:
+        forwardAuthToken: true
+        name: api
+        timeout: 600000
+        url: ~{srv-url}
+
+
+
+- name: smart-returns-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: smart-returns-app-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - name: smart-returns-ui
+      artifacts:
+      - smart-returns-ui.zip
+      target-path: resources/
+
+- name: smart-returns-api
+  type: nodejs
+  path: srv
+  hooks:
+    - name: deploy-before-start
+      type: task
+      phases:
+        - deploy.application.before-start
+      parameters:
+        command:
+          npm run prisma-deploy
+  properties:
+    SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'
+  requires:
+    - name: smart-returns-postgres-db
+    - name: smart-returns-app-uaa
+  provides:
+    - name: node-api
+      properties:
+        srv-url: ${default-url}
+  parameters:
+    disk-quota: 4096M
+    memory: 1024M
+    stack: cflinuxfs4
+    buildpacks:
+    - nodejs_buildpack
+
+resources:
+- name: smart-returns-app-uaa
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+    service-name: smart-returns-app-xsuaa-srv
+- name: smart-returns-app-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: smart-returns-app-html5-srv
+    service-plan: app-host
+- name: smart-returns-postgres-db
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: postgresql-db  
+    service-plan: trial
+    config:
+      postgresql_version: "13"
+      credentials: 
+        schema: "public"
+
+parameters:
+  enable-parallel-deployments: true

@@ -1,0 +1,44 @@
+generator client {
+  provider  = "prisma-client-js"
+  interface = "asyncio"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ReturnRequests {
+  id                       String   @id @default(uuid())
+  Description              String    
+  AIGeneratedDescription   String    
+  AIProcessed              Boolean
+  OrderNumber              String    
+  AIProcessedOrderNumber   String    
+  Status                   OrderStatus
+  createdAt                DateTime @default(now())
+  createdBy                String?
+  modifiedAt               DateTime @default(now())
+  modifiedBy               String?
+}
+
+enum OrderStatus {
+  Submitted
+  Approved
+  Details_Requested
+  Rejected
+}
+
+
+model Files {
+  id                String   @id @default(uuid())
+  Filename          String         
+  MimeType          String         
+  Size              Decimal  
+  Data              Bytes
+  returnRequestsId  String
+  createdAt         DateTime       @default(now())
+  createdBy         String?
+  modifiedAt        DateTime?      @default(now())
+  modifiedBy        String?
+}

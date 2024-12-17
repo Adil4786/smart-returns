@@ -1,0 +1,18 @@
+{
+    "destinations": [
+      {
+        "name": "api",
+        "url": "http://127.0.0.1:4004",
+        "forwardAuthToken": true,
+        "timeout": 999999
+      },
+      {
+        "name": "ui",
+        "url": "http://127.0.0.1:8080",
+        "forwardAuthToken": true,
+        "timeout": 999999
+      }
+    ],
+    "VCAP_SERVICES": {
+    }
+  }
