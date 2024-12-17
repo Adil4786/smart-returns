@@ -1,0 +1,11 @@
+{
+  "name": "smartreturns-approuter",
+  "scripts": {
+    "start": "node userinfo",
+    "startOriginal": "node node_modules/@sap/approuter/approuter.js"
+  },
+  "dependencies": {
+    "@sap/approuter": "^9",
+    "jwt-decode": "^4.0.0"
+  }
+}

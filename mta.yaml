@@ -23,8 +23,6 @@ modules:
         timeout: 600000
         url: ~{srv-url}
 
-
-
 - name: smart-returns-app-content
   type: com.sap.application.content
   path: .
@@ -66,6 +64,26 @@ modules:
     stack: cflinuxfs4
     buildpacks:
     - nodejs_buildpack
+- name: smartreturns-app
+  type: approuter.nodejs
+  path: approuter
+  parameters:
+    memory: 1GB
+    disk-quota: 1GB
+  build-parameters:
+    builder: custom
+    commands:
+      - npm install
+  requires:
+    - name: smart-returns-app-uaa
+    - name: smart-returns-html5-runtime
+    - name: node-api
+      group: destinations
+      properties:
+        forwardAuthToken: true
+        name: api
+        timeout: 600000
+        url: ~{srv-url}
 
 resources:
 - name: smart-returns-app-uaa
@@ -90,6 +108,12 @@ resources:
       postgresql_version: "13"
       credentials: 
         schema: "public"
+- name: smart-returns-html5-runtime
+  parameters:
+    service-name: my-html5-runtime
+    service-plan: app-runtime
+    service: html5-apps-repo
+  type: org.cloudfoundry.managed-service
 
 parameters:
   enable-parallel-deployments: true

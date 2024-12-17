@@ -1,0 +1,24 @@
+{
+  "welcomeFile": "smartreturns/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/logout",
+    "logoutPage": "/logout-page.html"
+  },
+  "routes": [
+    {
+      "source": "/api/(.*)$",
+      "target": "/$1",
+      "authenticationType": "xsuaa",
+      "destination": "api",
+      "csrfProtection":false
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "csrfProtection" : false
+    }
+  ]
+}

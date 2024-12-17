@@ -9,9 +9,13 @@
         "openui5",
         "sapui5"
     ],
+    "dependencies": {
+        "@sap/approuter": "^18.0.0"
+    },
     "main": "webapp/index.html",
     "scripts": {
-        "start": "fiori run --open 'index.html'",
+        "start": "node node_modules/@sap/approuter/approuter.js",
+        "start-fiori": "fiori run --open 'index.html'",
         "start-local": "fiori run --config ./ui5-local.yaml --open 'test/flpSandbox.html'",
         "start-noflp": "fiori run --open 'index.html'",
         "build": "ui5 build -a --clean-dest",
