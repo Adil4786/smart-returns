@@ -1,0 +1,17 @@
+{
+  "name": "simple.app.mta",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "build:mta": "rimraf resources mta_archives && mbt build --mtar archive",
+    "undeploy": "cf undeploy smart-returns --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^8",
+    "@sap/ux-ui5-tooling": "1.15.4",
+    "mbt": "^1.2.33",
+    "rimraf": "5.0.5"
+  }
+}
